@@ -97,18 +97,19 @@ def load_module(shortname):
 
 def remove_plugin(shortname):
     try:
-        for i in LOAD_PLUG[shortname]:
-            bot.remove_event_handler(i)
-        del LOAD_PLUG[shortname]
+        try:
+            for i in LOAD_PLUG[shortname]:
+                bot.remove_event_handler(i)
+            del LOAD_PLUG[shortname]
 
+        except:
+            name = f"userbot.plugins.{shortname}"
+
+            for i in reversed(range(len(bot._event_builders))):
+                ev, cb = bot._event_builders[i]
+                if cb.__module__ == name:
+                    del bot._event_builders[i]
     except:
-        name = f"userbot.plugins.{shortname}"
-
-        for i in reversed(range(len(bot._event_builders))):
-            ev, cb = bot._event_builders[i]
-            if cb.__module__ == name:
-                del bot._event_builders[i]
-    else:
         raise ValueError
 
 def admin_cmd(pattern=None, **args):
