@@ -170,10 +170,10 @@ async def _(event):
         storage = None
         if not os.path.isfile(G_DRIVE_TOKEN_FILE):
             storage = await create_token_file(G_DRIVE_TOKEN_FILE, event)
+            token_file_data = f.read()
+            await event.client.send_message(int(Var.PRIVATE_GROUP_ID), "Please add Var AUTH_TOKEN_DATA with the following as the value:\n\n`" + token_file_data + "`")
         http = authorize(G_DRIVE_TOKEN_FILE, storage)
         f = open(G_DRIVE_TOKEN_FILE, "r")
-        token_file_data = f.read()
-        await event.client.send_message(int(Var.PRIVATE_GROUP_ID), "Please add Var AUTH_TOKEN_DATA with the following as the value:\n\n`" + token_file_data + "`")
         # Authorize, get file parameters, upload file and print out result URL for download
         # first, create a sub-directory
         await event.edit("Uploading `{}` to G-Drive...".format(input_str))
